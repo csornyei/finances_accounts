@@ -49,7 +49,7 @@ def handle_exceptions(request: Request, call_next):
         return {"error": "Internal Server Error"}, 500
 
 
-app.include_router(router, prefix="/api/v1", tags=["api"])
+app.include_router(router, prefix="/api/v1", tags=["accounts"])
 
 
 @app.get("/health", tags=["health"])
