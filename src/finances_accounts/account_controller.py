@@ -4,9 +4,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy.future import select
 from uuid import UUID
+from typing import TypedDict
 
 from finances_accounts.models import Account
 from finances_accounts.logger import logger
+
+
+class AccountSearchParams(TypedDict):
+    name: str
+    iban: str
+    nickname: str
+    all: bool = True
 
 
 async def get_account(db: AsyncSession, account_id: UUID):
@@ -19,14 +27,24 @@ async def get_account(db: AsyncSession, account_id: UUID):
     return result.scalar_one_or_none()
 
 
-async def get_accounts(db: AsyncSession, all: bool = False):
+async def get_accounts(db: AsyncSession, search_params: AccountSearchParams):
     """
     Endpoint to get all accounts.
     """
-    if all:
-        result = await db.execute(select(Account))
-    else:
-        result = await db.execute(select(Account).where(Account.parent_id.is_(None)))
+    stmt = select(Account)
+
+    if not search_params.get("all"):
+        stmt = stmt.where(Account.parent_id.is_(None))
+
+    if search_params.get("name"):
+        stmt = stmt.where(Account.name.ilike(f"%{search_params['name']}%"))
+    if search_params.get("iban"):
+        stmt = stmt.where(Account.iban.ilike(f"%{search_params['iban']}%"))
+    if search_params.get("nickname"):
+        stmt = stmt.where(Account.nickname.ilike(f"%{search_params['nickname']}%"))
+
+    result = await db.execute(stmt)
+
     return result.scalars().all()
 
 

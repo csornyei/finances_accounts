@@ -9,11 +9,21 @@ router = APIRouter()
 
 
 @router.get("/accounts", response_model=list[schemas.AccountOut])
-async def get_accounts(all: bool = False, db: AsyncSession = Depends(get_db)):
+async def get_accounts(
+    name: str = "",
+    iban: str = "",
+    nickname: str = "",
+    all: bool = True,
+    db: AsyncSession = Depends(get_db),
+):
     """
     Endpoint to get all accounts.
     """
-    return await account_controller.get_accounts(db, all=all)
+    search_params = account_controller.AccountSearchParams(
+        name=name, iban=iban, nickname=nickname, all=all
+    )
+
+    return await account_controller.get_accounts(db, search_params)
 
 
 @router.post("/accounts", response_model=schemas.AccountOut)
