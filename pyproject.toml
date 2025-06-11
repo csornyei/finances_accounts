@@ -2,7 +2,7 @@
 name = "finances_accounts"
 version = "0.1.0"
 description = ""
-authors = [{ name = "Mate Csornyei", email = "mcsornyei@priogen.nl" }]
+authors = [{ name = "Mate Csornyei", email = "mate@csornyei.com" }]
 readme = "README.md"
 requires-python = ">=3.13,<4.0"
 dependencies = [
