@@ -6,8 +6,9 @@ from sqlalchemy.future import select
 from uuid import UUID
 from typing import TypedDict
 
-from finances_accounts.models import Account
 from finances_accounts.logger import logger
+
+from finances_shared.models import Account
 
 
 class AccountSearchParams(TypedDict):

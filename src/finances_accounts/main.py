@@ -1,11 +1,22 @@
 import time
+from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from finances_accounts.logger import logger
 from finances_accounts.routes import router
+from finances_shared.db import init_db, get_db
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db(logger)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -53,8 +64,9 @@ app.include_router(router, prefix="/api/v1", tags=["accounts"])
 
 
 @app.get("/health", tags=["health"])
-async def health_check():
+async def health_check(db: AsyncSession = Depends(get_db)):
     """
     Health check endpoint.
     """
-    return {"status": "ok"}
+    result = await db.execute(text("SELECT 1"))
+    return {"status": "ok", "db_status": result.scalar() == 1}

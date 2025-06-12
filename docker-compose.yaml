@@ -1,15 +1,27 @@
 services:
-  project:
-    build: 
+  finances_accounts:
+    build:
       context: .
       dockerfile: Dockerfile
-    container_name: project
+      secrets:
+        - github_user
+        - github_token
+    container_name: finances_accounts
     restart: always
     ports:
       - "8082:8000"
     networks:
       - finances-network
+    secrets:
+      - github_user
+      - github_token
 
 networks:
   finances-network:
     external: true
+
+secrets:
+  github_user:
+    file: ./secrets/github_user.txt
+  github_token:
+    file: ./secrets/github_token.txt

@@ -1,5 +1,7 @@
 FROM python:3.13-alpine AS builder
 
+RUN apk add --no-cache git
+
 RUN pip install poetry==2.1.2
 
 ENV POETRY_NO_INTERACTION=1 \
@@ -12,7 +14,14 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 RUN touch README.md
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --no-root
+RUN poetry config repositories.github-csornyei-shared https://github.com/csornyei/finances_shared.git
+
+RUN --mount=type=secret,id=github_user,env=GITHUB_USER \
+    --mount=type=secret,id=github_token,env=GITHUB_TOKEN \
+    poetry config http-basic.github-csornyei-shared $GITHUB_USER $GITHUB_TOKEN
+
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR \
+    poetry install --without dev --no-root
 
 FROM python:3.13-alpine AS runtime
 
@@ -21,6 +30,6 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY src/finances_accounts ./finances_accounts
+COPY src/finances_statements ./finances_statements
 
 ENTRYPOINT ["fastapi", "run", "finances_accounts/main.py"]
