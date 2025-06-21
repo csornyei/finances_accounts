@@ -336,7 +336,7 @@ standard = ["uvicorn[standard] (>=0.15.0)"]
 
 [[package]]
 name = "finances-shared"
-version = "0.1.0"
+version = "0.2.0"
 description = "Shared code for the finances project"
 optional = false
 python-versions = ">=3.13,<4.0"
@@ -354,8 +354,8 @@ sqlalchemy = ">=2.0.40,<3.0.0"
 [package.source]
 type = "git"
 url = "https://github.com/csornyei/finances_shared.git"
-reference = "HEAD"
-resolved_reference = "8ae08ed80a5fc591f9f9a2edb85276fc99c6903c"
+reference = "0.2.0"
+resolved_reference = "a8632254903c75493d964548405fdfde1863e924"
 
 [[package]]
 name = "greenlet"
@@ -2071,4 +2071,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0"
-content-hash = "010597cc574ca98da9cdcb829b37c3d17e8ce1309ae9101ebadfdab2095200d2"
+content-hash = "13231010c409ecd52be471cebbdf05b1be7153a8e363e2875c58fba736e33b51"

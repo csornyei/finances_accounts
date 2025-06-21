@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from finances_accounts import schemas, account_controller
-
+from fastapi import APIRouter, Depends, HTTPException
 from finances_shared.db import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from finances_accounts import account_controller, schemas
 
 router = APIRouter()
 

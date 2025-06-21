@@ -2,12 +2,12 @@ import time
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Request
+from finances_shared.db import get_db, init_db
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from finances_accounts.logger import logger
 from finances_accounts.routes import router
-from finances_shared.db import init_db, get_db
 
 
 @asynccontextmanager

@@ -1,14 +1,14 @@
+from typing import TypedDict
+from uuid import UUID
+
 from fastapi import HTTPException
+from finances_shared.models import Account
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 from sqlalchemy.future import select
-from uuid import UUID
-from typing import TypedDict
+from sqlalchemy.orm import selectinload
 
 from finances_accounts.logger import logger
-
-from finances_shared.models import Account
 
 
 class AccountSearchParams(TypedDict):
