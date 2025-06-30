@@ -45,12 +45,12 @@ async def log_response(request: Request, call_next):
 
 
 @app.middleware("http")
-def handle_exceptions(request: Request, call_next):
+async def handle_exceptions(request: Request, call_next):
     """
     Middleware to handle exceptions and log them.
     """
     try:
-        response = call_next(request)
+        response = await call_next(request)
         return response
     except HTTPException as http_exception:
         logger.error(f"HTTP exception: {http_exception.detail}")
