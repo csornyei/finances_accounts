@@ -9,25 +9,19 @@ from finances_accounts import account_controller, schemas
 router = APIRouter()
 
 
-@router.get("/accounts", response_model=list[schemas.AccountOut])
+@router.get("/accounts/", response_model=list[schemas.AccountOut])
 async def get_accounts(
-    name: str = "",
-    iban: str = "",
-    nickname: str = "",
-    all: bool = True,
+    params: schemas.AccountsFilter = Depends(),
     db: AsyncSession = Depends(get_db),
 ):
     """
     Endpoint to get all accounts.
     """
-    search_params = account_controller.AccountSearchParams(
-        name=name, iban=iban, nickname=nickname, all=all
-    )
 
-    return await account_controller.get_accounts(db, search_params)
+    return await account_controller.get_accounts(db, params)
 
 
-@router.post("/accounts", response_model=schemas.AccountOut)
+@router.post("/accounts/", response_model=schemas.AccountOut)
 async def create_account(
     account: schemas.AccountCreate, db: AsyncSession = Depends(get_db)
 ):

@@ -42,3 +42,14 @@ class AccountAlias(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class AccountsFilter(BaseModel):
+    name: Optional[str] = None
+    iban: Optional[str] = None
+    nickname: Optional[str] = None
+    all: bool = True
+
+    class Config:
+        from_attributes = True
+        orm_mode = True
