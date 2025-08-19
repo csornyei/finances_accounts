@@ -11,13 +11,13 @@ services:
     ports:
       - "8082:8000"
     networks:
-      - finances-network
+      - finances_shared_default
     secrets:
       - github_user
       - github_token
 
 networks:
-  finances-network:
+  finances_shared_default:
     external: true
 
 secrets:
