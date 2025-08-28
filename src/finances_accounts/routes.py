@@ -6,6 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from finances_accounts import account_controller, schemas
 
+from finances_shared.db import get_db
+
 router = APIRouter()
 
 
